@@ -4,24 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { ComponentPropsWithoutRef } from "react"
 import { Link } from "react-router-dom"
-import { useForm, SubmitHandler } from "react-hook-form"
+import { SubmitHandler } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-
-const formSchema = z.object({
-  email: z.string().email("이메일 양식으로 입력해 주세요."),
-  password: z.string().min(8, "비밀번호는 최소 8자 이상이어야 합니다."),
-})
+import { postLogin } from "@/apis/auth"
+import { LoginSchemaType } from "@/schemas"
+import { useAuthForm } from "@/hooks/useAuthForm"
+import { useAuthMutation } from "@/hooks/useAuthMutation"
+import { AuthType } from "@/types"
 
 export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div">) {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  })
+  const { form } = useAuthForm()
 
   const {
     control,
@@ -29,8 +21,12 @@ export function LoginForm({ className, ...props }: ComponentPropsWithoutRef<"div
     formState: { isValid },
   } = form
 
-  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (payload) => {
-    console.log(payload)
+  const { mutate: postLoginMutate } = useAuthMutation<AuthType, Error, LoginSchemaType>({
+    mutationFn: (payload: LoginSchemaType) => postLogin(payload),
+  })
+
+  const onSubmit: SubmitHandler<LoginSchemaType> = (payload) => {
+    postLoginMutate(payload)
   }
 
   return (
