@@ -11,15 +11,15 @@ export default function ErrorPage() {
   } else if (typeof error === "string") {
     errorMessage = error
   } else {
-    errorMessage = "Unknown error"
+    errorMessage = "알수없는 에러가 발생했습니다."
   }
 
   console.error(error)
 
   return (
     <div>
-      <h1>문제가 생겼어요!</h1>
-      <p>죄송하지만 현재 발생한 문제로 인해서 해당 페이지로 접근이 어렵습니다.</p>
+      <h1>Oops!</h1>
+      <p>Sorry, an unexpected error has occurred.</p>
       <p>
         <i>{errorMessage}</i>
       </p>
