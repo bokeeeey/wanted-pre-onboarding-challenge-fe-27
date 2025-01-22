@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsx watch index.ts",
+    "dev": "tsx watch index.ts",
     "build": "tsc",
     "test": "vitest"
   },
