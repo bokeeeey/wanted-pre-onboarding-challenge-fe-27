@@ -1,10 +1,19 @@
 {
   "name": "todolist",
   "private": true,
+  "scripts": {
+    "start": "yarn workspace @repo/api start",
+    "dev": "yarn workspace @repo/web dev"
+  },
   "workspaces": {
     "packages": [
-      "apps/*"
+      "apps/**"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
+    "typescript": "~5.6.2"
   },
   "packageManager": "yarn@4.6.0"
 }
