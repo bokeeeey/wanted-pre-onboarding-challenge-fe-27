@@ -4,7 +4,7 @@ import "./global.css"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Root from "./routes/root"
 import ErrorPage from "./error-page"
-import SignInPage from "./routes/sign-in"
+import Autn from "./routes/auth"
 
 const router = createBrowserRouter([
   {
@@ -13,8 +13,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "sign-in",
-    element: <SignInPage />,
+    path: "/auth",
+    element: <Autn />,
   },
 ])
 
