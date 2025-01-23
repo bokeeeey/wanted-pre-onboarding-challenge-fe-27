@@ -16,6 +16,5 @@ export const API_ROUTES = {
 
 export const ROUTES = {
   ROOT: "/",
-  SING_IN: "/sign-in",
-  SIGN_UP: "/sign-up",
+  AUTH: "/auth",
 }

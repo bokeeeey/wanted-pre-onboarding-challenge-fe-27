@@ -1,15 +1,12 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
-import { useToast } from "./use-toast"
+import { ResponseAuthType } from "@/types"
 
-export const useAuthMutation = <TData, TError extends Error, TVariables>(
+export const useAuthMutation = <TData extends ResponseAuthType, TError extends Error, TVariables>(
   options: UseMutationOptions<TData, TError, TVariables>,
 ) => {
-  const { toast } = useToast()
-
   return useMutation({
-    onSuccess: (response) => console.log(response),
-    onError: (error) => {
-      toast({ variant: "destructive", description: error.message })
+    onSuccess: (response) => {
+      localStorage.setItem("token", response.token)
     },
     ...options,
   })

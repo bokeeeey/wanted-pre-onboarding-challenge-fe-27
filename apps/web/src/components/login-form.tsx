@@ -1,33 +1,49 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { ComponentPropsWithoutRef } from "react"
 import { SubmitHandler } from "react-hook-form"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { postAuth } from "@/apis/auth"
-import { RequestAuthType } from "@/schemas"
 import { useAuthForm } from "@/hooks/useAuthForm"
 import { useAuthMutation } from "@/hooks/useAuthMutation"
-import { ResponseAuthType } from "@/types"
+
+import { postAuth } from "@/apis/auth"
+import { cn } from "@/lib/utils"
+import type { RequestAuthType } from "@/schemas"
+import type { ResponseAuthType } from "@/types"
+import { delay } from "@/utils/delay"
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Loader2 } from "lucide-react"
+import { toast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom"
+import { ROUTES } from "@/constants"
 
 interface LoginFormProps extends ComponentPropsWithoutRef<"div"> {
   variant: "login" | "sign-up"
 }
 
 export default function LoginForm({ className, variant, ...props }: LoginFormProps) {
-  const { form } = useAuthForm(variant)
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = form
+  const navigate = useNavigate()
+  const { form: authForm } = useAuthForm(variant)
+  const { isValid } = authForm.formState
 
-  const { mutate: postAuthMutate } = useAuthMutation<ResponseAuthType, Error, RequestAuthType>({
-    mutationFn: (payload: RequestAuthType) => postAuth(payload, variant),
+  const { mutate: postAuthMutate, isPending } = useAuthMutation<ResponseAuthType, Error, RequestAuthType>({
+    mutationFn: async (payload: RequestAuthType) => {
+      await delay(800)
+      return postAuth(payload, variant)
+    },
   })
 
-  const onSubmit: SubmitHandler<RequestAuthType> = (payload) => postAuthMutate(payload)
+  const onSubmit: SubmitHandler<RequestAuthType> = async (payload) =>
+    postAuthMutate(payload, {
+      onSuccess: (response) => {
+        toast({ description: response.message })
+        navigate(ROUTES.ROOT)
+      },
+      onError: (error) => {
+        toast({ variant: "destructive", description: error.message })
+      },
+    })
 
   const formTexts = {
     cardTitle: variant === "login" ? "Login" : "Sign Up",
@@ -45,12 +61,12 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
           <CardDescription>{formTexts.cardDescription}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+          <Form {...authForm}>
+            <form onSubmit={authForm.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
                   <FormField
-                    control={control}
+                    control={authForm.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -65,7 +81,7 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
                 </div>
                 <div className="grid gap-2">
                   <FormField
-                    control={control}
+                    control={authForm.control}
                     name="password"
                     render={({ field }) => (
                       <FormItem>
@@ -86,7 +102,7 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
                 {variant === "sign-up" && (
                   <div className="grid gap-2">
                     <FormField
-                      control={control}
+                      control={authForm.control}
                       name="passwordConfirm"
                       render={({ field }) => (
                         <FormItem>
@@ -106,7 +122,14 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
                   </div>
                 )}
                 <Button type="submit" className="w-full" disabled={!isValid}>
-                  Login
+                  {isPending ? (
+                    <>
+                      <Loader2 className="animate-spin" />
+                      Please wait
+                    </>
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
               </div>
             </form>

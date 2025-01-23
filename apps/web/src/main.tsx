@@ -8,15 +8,16 @@ import Autn from "./routes/auth"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Toaster } from "./components/ui/toaster"
+import { ROUTES } from "./constants"
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.ROOT,
     element: <Root />,
     errorElement: <ErrorPage />,
   },
   {
-    path: "/auth",
+    path: ROUTES.AUTH,
     element: <Autn />,
   },
 ])
