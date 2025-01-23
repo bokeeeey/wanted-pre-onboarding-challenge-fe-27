@@ -1,13 +1,15 @@
 import { ComponentPropsWithoutRef } from "react"
 import { SubmitHandler } from "react-hook-form"
-import { useAuthForm } from "@/hooks/useAuthForm"
-import { useAuthMutation } from "@/hooks/useAuthMutation"
+import { useAuthForm } from "@/hooks/use-auth-form"
+import { useAuthMutation } from "@/hooks/use-auth-mutation"
+import { useNavigate } from "react-router-dom"
 
 import { postAuth } from "@/apis/auth"
 import { cn } from "@/lib/utils"
 import type { RequestAuthType } from "@/schemas"
 import type { ResponseAuthType } from "@/types"
 import { delay } from "@/utils/delay"
+import { ROUTES } from "@/constants"
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { Input } from "@/components/ui/input"
@@ -15,8 +17,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
-import { useNavigate } from "react-router-dom"
-import { ROUTES } from "@/constants"
 
 interface LoginFormProps extends ComponentPropsWithoutRef<"div"> {
   variant: "login" | "sign-up"
