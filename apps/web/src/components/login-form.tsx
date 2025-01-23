@@ -5,11 +5,11 @@ import { Input } from "@/components/ui/input"
 import { ComponentPropsWithoutRef } from "react"
 import { SubmitHandler } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { postLogin } from "@/apis/auth"
-import { LoginType } from "@/schemas"
+import { postAuth } from "@/apis/auth"
+import { RequestAuthType } from "@/schemas"
 import { useAuthForm } from "@/hooks/useAuthForm"
 import { useAuthMutation } from "@/hooks/useAuthMutation"
-import { AuthType } from "@/types"
+import { ResponseAuthType } from "@/types"
 
 interface LoginFormProps extends ComponentPropsWithoutRef<"div"> {
   variant: "login" | "sign-up"
@@ -23,13 +23,11 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
     formState: { isValid },
   } = form
 
-  const { mutate: postAuthMutate } = useAuthMutation<AuthType, Error, LoginType>({
-    mutationFn: (payload: LoginType) => postLogin(payload),
+  const { mutate: postAuthMutate } = useAuthMutation<ResponseAuthType, Error, RequestAuthType>({
+    mutationFn: (payload: RequestAuthType) => postAuth(payload, variant),
   })
 
-  const onSubmit: SubmitHandler<LoginType> = (payload) => {
-    postAuthMutate(payload)
-  }
+  const onSubmit: SubmitHandler<RequestAuthType> = (payload) => postAuthMutate(payload)
 
   const formTexts = {
     cardTitle: variant === "login" ? "Login" : "Sign Up",

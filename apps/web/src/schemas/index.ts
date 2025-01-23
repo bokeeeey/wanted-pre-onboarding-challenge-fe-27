@@ -1,12 +1,12 @@
 import { z } from "zod"
 
-export const LoginSchema = z.object({
+export const AuthSchema = z.object({
   email: z.string().email("이메일 양식으로 입력해 주세요."),
   password: z.string().min(8, "비밀번호는 최소 8자 이상이어야 합니다."),
 })
-export type LoginType = z.infer<typeof LoginSchema>
+export type RequestAuthType = z.infer<typeof AuthSchema>
 
-export const SignUpSchema = LoginSchema.extend({
+export const SignUpSchema = AuthSchema.extend({
   passwordConfirm: z.string().min(8, "비밀번호 확인은 최소 8자 이상이어야 합니다."),
 }).superRefine((data, ctx) => {
   if (data.password !== data.passwordConfirm) {

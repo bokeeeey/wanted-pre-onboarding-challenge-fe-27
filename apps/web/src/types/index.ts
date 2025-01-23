@@ -1,4 +1,4 @@
-export type AuthType = {
+export type ResponseAuthType = {
   message: string
   token: string
 }
