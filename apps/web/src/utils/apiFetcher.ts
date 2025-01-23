@@ -4,7 +4,7 @@ export const apiFetcher = async (url: string, options: RequestInit) => {
     const result = await response.json()
 
     if (!response.ok) {
-      throw new Error(result.detail || "API 호출 실패")
+      throw new Error(result.details || "API 호출 실패")
     }
 
     return result
