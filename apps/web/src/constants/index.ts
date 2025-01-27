@@ -17,4 +17,7 @@ export const API_ROUTES = {
 export const ROUTES = {
   ROOT: "/",
   AUTH: "/auth",
+  TODOS: "/todos",
 }
+
+export const ACCESS_TOKEN = "accessToken"

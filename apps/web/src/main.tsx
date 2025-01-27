@@ -1,26 +1,13 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import "./global.css"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Root from "./routes/root"
-import ErrorPage from "./error-page"
-import Autn from "./routes/auth"
+import { RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { Toaster } from "./components/ui/toaster"
-import { ROUTES } from "./constants"
 
-const router = createBrowserRouter([
-  {
-    path: ROUTES.ROOT,
-    element: <Root />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: ROUTES.AUTH,
-    element: <Autn />,
-  },
-])
+import { Toaster } from "./components/ui/toaster"
+import { router } from "./router"
+
+import "./global.css"
 
 const queryClient = new QueryClient()
 

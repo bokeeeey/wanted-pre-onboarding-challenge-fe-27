@@ -8,7 +8,7 @@ import { postAuth } from "@/apis/auth"
 import { cn } from "@/lib/utils"
 import type { RequestAuthType } from "@/schemas"
 import type { ResponseAuthType } from "@/types"
-import { delay } from "@/utils/delay"
+import { delay } from "@/utils"
 import { ROUTES } from "@/constants"
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
@@ -34,11 +34,11 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
     },
   })
 
-  const onSubmit: SubmitHandler<RequestAuthType> = async (payload) =>
+  const onSubmit: SubmitHandler<RequestAuthType> = (payload) =>
     postAuthMutate(payload, {
       onSuccess: (response) => {
         toast({ description: response.message })
-        navigate(ROUTES.ROOT)
+        navigate(ROUTES.TODOS)
       },
       onError: (error) => {
         toast({ variant: "destructive", description: error.message })
