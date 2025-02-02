@@ -128,7 +128,7 @@ export default function LoginForm({ className, variant, ...props }: LoginFormPro
                       Please wait
                     </>
                   ) : (
-                    "Login"
+                    formTexts.cardTitle
                   )}
                 </Button>
               </div>
